@@ -19,7 +19,8 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-.idea/*
+.idea/**
+*.idea/*
 *.iws
 *.iml
 *.ipr
@@ -53,4 +54,4 @@ build/
 /allure-results/
 **/allure-results/
 /.allure/
-**/.allure/
+**/.allure/!/.idea/

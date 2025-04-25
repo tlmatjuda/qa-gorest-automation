@@ -7,7 +7,7 @@
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>qa-gorest-automation</name>
+    <name>QA GoREST API Automation</name>
     <url>http://maven.apache.org</url>
 
 
@@ -16,6 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <java.version>21</java.version>
+        <lombok.version>1.18.38</lombok.version>
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -27,6 +28,14 @@
             <groupId>com.toob</groupId>
             <artifactId>qabase-rest</artifactId>
             <version>0.0.1</version>
+        </dependency>
+
+        <!-- LOMBOK -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
