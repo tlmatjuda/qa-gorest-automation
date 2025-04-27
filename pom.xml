@@ -8,8 +8,6 @@
     <packaging>jar</packaging>
 
     <name>QA GoREST API Automation</name>
-    <url>http://maven.apache.org</url>
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -50,7 +48,6 @@
                     <useModulePath>false</useModulePath>
                     <printSummary>true</printSummary>
                     <reportFormat>brief</reportFormat>
-                    <briefFiles>false</briefFiles>
                 </configuration>
             </plugin>
         </plugins>
