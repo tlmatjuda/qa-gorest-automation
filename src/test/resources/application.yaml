@@ -5,3 +5,5 @@
 web-service:
   token: ${GOREST_TOKEN}
   base-url: "https://gorest.co.in/public/v2"
+  total-max-connections: 100
+  default-max-per-route: 25

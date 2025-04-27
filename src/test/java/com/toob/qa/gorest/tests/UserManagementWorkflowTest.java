@@ -1,6 +1,6 @@
 package com.toob.qa.gorest.tests;
 
-import com.toob.qa.gorest.factory.UserFactory;
+import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.User;
 import com.toob.qabase.http.AbstractHttpTest;
@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,7 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Feature("User Registration and Profile Update")
 @Story("As a user, I want to register and update my profile successfully")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UserApiTest extends AbstractHttpTest {
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+class UserManagementWorkflowTest extends AbstractHttpTest {
 
     @Autowired
     private UserManager userManager;
@@ -30,7 +32,7 @@ class UserApiTest extends AbstractHttpTest {
     @DisplayName("1️⃣ Create a New User")
     @Severity(SeverityLevel.CRITICAL)
     void createUser() {
-        testUser = userManager.save(UserFactory.randomUser());
+        testUser = userManager.save(TestDataFactory.randomUser());
         assertNotNull(testUser.getId(), "User ID should not be null after creation.");
     }
 

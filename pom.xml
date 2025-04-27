@@ -20,6 +20,7 @@
 
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven-surefire-plugin.version>3.2.2</maven-surefire-plugin.version>
     </properties>
 
 
@@ -38,4 +39,20 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                    <printSummary>true</printSummary>
+                    <reportFormat>brief</reportFormat>
+                    <briefFiles>false</briefFiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
