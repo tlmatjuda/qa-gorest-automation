@@ -2,15 +2,12 @@ package com.toob.qa.gorest.tests;
 
 
 import com.toob.qa.gorest.factory.TestDataFactory;
-import com.toob.qa.gorest.manager.PostsManager;
-import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.Comment;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,10 +63,12 @@ class CommentingOnAPostWorkflowTest extends AbstractGoRestTest {
 
     @Test
     @Order(5)
-    @DisplayName("5️⃣ Remove Comment By Id")
+    @DisplayName("5️⃣ Clean up Comment, Post and User")
     @Severity(SeverityLevel.NORMAL)
     void deletePost() {
+        commentManager.delete(testComment.getId());
         postsManager.delete(testPost.getId());
+        userManager.delete(testUser.getId());
     }
 
 }

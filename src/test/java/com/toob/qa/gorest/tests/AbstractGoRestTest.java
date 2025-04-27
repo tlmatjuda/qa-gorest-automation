@@ -3,6 +3,7 @@ package com.toob.qa.gorest.tests;
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.manager.CommentManager;
 import com.toob.qa.gorest.manager.PostsManager;
+import com.toob.qa.gorest.manager.TodoManager;
 import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
@@ -23,6 +24,9 @@ abstract class AbstractGoRestTest extends AbstractHttpTest {
 
     @Autowired
     protected CommentManager commentManager;
+
+    @Autowired
+    protected TodoManager todoManager;
 
     User postUser() {
         User savedUser = userManager.save(TestDataFactory.randomUser());
