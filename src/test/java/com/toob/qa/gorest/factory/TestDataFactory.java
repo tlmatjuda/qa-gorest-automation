@@ -1,5 +1,6 @@
 package com.toob.qa.gorest.factory;
 
+import com.toob.qa.gorest.model.Comment;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
 
@@ -21,6 +22,15 @@ public class TestDataFactory {
                 .userId( userId) // Random user ID between 0–9999
                 .title("QA Base Post " + UUID.randomUUID())
                 .body("This is an auto-generated blog post body. ID: " + UUID.randomUUID())
+                .build();
+    }
+
+    public static Comment randomComment(long postId) {
+        return Comment.builder()
+                .postId(postId)
+                .name("QA Base User " + UUID.randomUUID())
+                .email("user_" + UUID.randomUUID() + "@toobprojects.com")
+                .body("This is an auto-generated comment body. ID: " + UUID.randomUUID())
                 .build();
     }
 

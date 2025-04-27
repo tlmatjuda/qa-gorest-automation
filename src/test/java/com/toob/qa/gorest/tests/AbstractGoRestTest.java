@@ -1,6 +1,7 @@
 package com.toob.qa.gorest.tests;
 
 import com.toob.qa.gorest.factory.TestDataFactory;
+import com.toob.qa.gorest.manager.CommentManager;
 import com.toob.qa.gorest.manager.PostsManager;
 import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.Post;
@@ -15,10 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 abstract class AbstractGoRestTest extends AbstractHttpTest {
 
     @Autowired
-    private UserManager userManager;
+    protected UserManager userManager;
 
     @Autowired
-    private PostsManager postsManager;
+    protected PostsManager postsManager;
+
+    @Autowired
+    protected CommentManager commentManager;
 
     User postUser() {
         User savedUser = userManager.save(TestDataFactory.randomUser());
