@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Story("As a user, I want to register and update my profile successfully")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
-class UserManagementWorkflowTest extends AbstractHttpTest {
+class UserManagementWorkflowTest extends AbstractGoRestTest {
 
     @Autowired
     private UserManager userManager;
@@ -32,8 +32,7 @@ class UserManagementWorkflowTest extends AbstractHttpTest {
     @DisplayName("1️⃣ Create a New User")
     @Severity(SeverityLevel.CRITICAL)
     void createUser() {
-        testUser = userManager.save(TestDataFactory.randomUser());
-        assertNotNull(testUser.getId(), "User ID should not be null after creation.");
+        testUser = postUser();
     }
 
     @Test

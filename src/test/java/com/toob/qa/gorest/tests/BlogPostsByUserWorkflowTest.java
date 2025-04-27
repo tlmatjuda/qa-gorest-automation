@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Feature("Blog Post Management")
 @Story("As a user, I want to create and publish a new blog post successfully")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class BlogPostsByUserWorkflowTest extends AbstractHttpTest {
+class BlogPostsByUserWorkflowTest extends AbstractGoRestTest {
 
     @Autowired
     private UserManager userManager;
@@ -39,7 +39,7 @@ class BlogPostsByUserWorkflowTest extends AbstractHttpTest {
     @Severity(SeverityLevel.CRITICAL)
     void createUser() {
         testUser = userManager.save(TestDataFactory.randomUser());
-        assertNotNull(testUser.getId(), "User ID should not be null after creation.");
+        assertNotNull( testUser.getId(), "User ID should not be null after creation.");
     }
 
     @Test
@@ -47,9 +47,9 @@ class BlogPostsByUserWorkflowTest extends AbstractHttpTest {
     @DisplayName("2️⃣ User creates a Post")
     @Severity(SeverityLevel.CRITICAL)
     void createPost() {
-        Post freshPost = TestDataFactory.randomPost(testUser.getId());
-        testPost = postsManager.save(freshPost);
-        assertNotNull(testPost.getId(), "Post ID should not be null after creation.");
+        testPost = createUserBlogPost( testUser.getId());
+        assertNotNull( testPost.getTitle(), "Post (  Title ) should not be null after creation.");
+        assertNotNull( testPost.getBody(), "Post ( Body ) should not be null after creation.");
     }
 
     @Test
@@ -58,8 +58,8 @@ class BlogPostsByUserWorkflowTest extends AbstractHttpTest {
     @Severity(SeverityLevel.CRITICAL)
     void fetchPost() {
         Post post = postsManager.fetchById(testPost.getId());
-        assertEquals(post.getId(), testPost.getId(), "Blog post IDs should match.");
-        assertEquals(testPost.getUserId(), testUser.getId(), "Blog Post Id should match User Id");
+        assertEquals( post.getId(), testPost.getId(), "Blog post IDs should match.");
+        assertEquals( testPost.getUserId(), testUser.getId(), "Blog Post Id should match User Id");
     }
 
     @Test
