@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -e  # Exit immediately on error
+set -e  # Exit immediately on error
 #set -x  # Debug mode: print commands as they are executed
 
 # qabase-rest-install.sh
