@@ -2,6 +2,6 @@
 
 # QABASE REST
 # ======================================================================================================================
-web-service:
+rest-service:
   token: ${GOREST_TOKEN}
   base-url: "https://gorest.co.in/public/v2"

@@ -6,6 +6,7 @@ import com.toob.qa.gorest.manager.PostsManager;
 import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
+import com.toob.qabase.QaBaseTest;
 import com.toob.qabase.http.AbstractHttpTest;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
-@SpringBootTest
+@QaBaseTest
 @Epic("User Blog Post Workflow")
 @Feature("Blog Post Management")
 @Story("As a user, I want to create and publish a new blog post successfully")

@@ -7,13 +7,14 @@ import com.toob.qa.gorest.manager.TodoManager;
 import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
+import com.toob.qabase.QaBaseTest;
 import com.toob.qabase.http.AbstractHttpTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@SpringBootTest
+@QaBaseTest
 abstract class AbstractGoRestTest extends AbstractHttpTest {
 
     @Autowired

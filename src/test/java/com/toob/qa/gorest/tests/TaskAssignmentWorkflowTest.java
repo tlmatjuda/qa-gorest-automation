@@ -6,6 +6,7 @@ import com.toob.qa.gorest.manager.TodoManager;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.Todo;
 import com.toob.qa.gorest.model.User;
+import com.toob.qabase.QaBaseTest;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -17,7 +18,7 @@ import static com.toob.qa.gorest.manager.TodoManager.STATUS_PENDING;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@SpringBootTest
+@QaBaseTest
 @Epic("Task Management")
 @Feature("User Task Management")
 @Story("As a user, I want to manage Tasks or Todos")

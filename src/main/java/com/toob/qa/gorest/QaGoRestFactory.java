@@ -1,8 +1,8 @@
 package com.toob.qa.gorest;
 
-import com.toob.qabase.QABaseTestConfig;
+import com.toob.qabase.QaBaseAutomationModule;
 import org.springframework.context.annotation.ComponentScan;
 
-@QABaseTestConfig
+@QaBaseAutomationModule
 @ComponentScan( basePackageClasses = QaGoRestPackage.class )
 public class QaGoRestFactory {}

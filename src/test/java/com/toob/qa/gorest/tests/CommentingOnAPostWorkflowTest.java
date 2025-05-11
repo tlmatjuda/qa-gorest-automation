@@ -5,6 +5,7 @@ import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.Comment;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
+import com.toob.qabase.QaBaseTest;
 import io.qameta.allure.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -13,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@SpringBootTest
+@QaBaseTest
 @Epic("User Interactions on Blog Posts")
 @Feature("User Feedback via Comments")
 @Story("As a user, I want to comment on a blog post to engage with its content and share my thoughts")
