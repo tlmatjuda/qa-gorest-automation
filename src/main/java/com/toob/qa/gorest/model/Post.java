@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Post {
-    private Long id;
+    private long id;
 
     @JsonProperty("user_id")
     private Long userId;

@@ -1,15 +1,15 @@
 package com.toob.qa.gorest.tests;
 
 import com.toob.qa.gorest.factory.TestDataFactory;
-import com.toob.qa.gorest.manager.UserManager;
 import com.toob.qa.gorest.model.User;
 import com.toob.qabase.QaBaseTest;
-import com.toob.qabase.http.AbstractHttpTest;
+import com.toob.qabase.rest.RestModuleConstants;
+import com.toob.qabase.rest.client.RestClient;
+import com.toob.qabase.rest.support.HttpSupport;
 import io.qameta.allure.*;
+import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,42 +24,60 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 class UserManagementWorkflowTest extends AbstractGoRestTest {
 
-    @Autowired
-    private UserManager userManager;
-    private static User testUser;
+    private static User user;
 
     @Test
     @Order(1)
-    @DisplayName("1️⃣ Create a New User")
-    @Severity(SeverityLevel.CRITICAL)
+    @DisplayName("1️⃣ Create user (POST /users)")
     void createUser() {
-        testUser = postUser();
+        // QA Base REST Expect DSL: readable Given/When/Then chain
+        Response resp = RestClient.post("/users", TestDataFactory.randomUser());
+        user = HttpSupport.expect(resp)
+                .created()  // ✅ HTTP 201
+                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .attach()   // 📎 Add response body to Allure
+                .as(User.class);
+
+        assertNotNull(user.getId(), "New user must have an id");
     }
 
     @Test
     @Order(2)
-    @DisplayName("2️⃣ Fetch Created User and Validate")
-    @Severity(SeverityLevel.CRITICAL)
-    void fetchCreatedUser() {
-        User fetched = userManager.fetchById(testUser.getId());
-        assertEquals(testUser.getEmail(), fetched.getEmail(), "Fetched user email should match.");
+    @DisplayName("2️⃣ Fetch user (GET /users/{id})")
+    void fetchUser() {
+        Response resp = RestClient.get("/users/" + user.getId());
+        User found = HttpSupport.expect(resp)
+                .ok()   // ✅ HTTP 200
+                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .fieldEq("id", Math.toIntExact(user.getId()))    // 🔎 JSON path assertion via DSL
+                .attach()
+                .as(User.class);
+
+        assertEquals(user.getEmail(), found.getEmail());
     }
 
     @Test
     @Order(3)
-    @DisplayName("3️⃣ Update User Information")
-    @Severity(SeverityLevel.NORMAL)
-    void updateUserProfile() {
-        testUser.setStatus("inactive");
-        User updated = userManager.udpate(testUser);
-        assertEquals("inactive", updated.getStatus(), "User status should be updated to inactive.");
+    @DisplayName("3️⃣ Update user (PUT /users/{id})")
+    void updateUser() {
+        user.setStatus("inactive");
+
+        Response resp = RestClient.put("/users/" + user.getId(), user);
+        user = HttpSupport.expect(resp)
+                .ok()
+                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .fieldEq("status", "inactive")
+                .attach()
+                .as(User.class);
     }
 
     @Test
     @Order(4)
-    @DisplayName("4️⃣ Delete User")
-    @Severity(SeverityLevel.BLOCKER)
+    @DisplayName("4️⃣ Delete user (DELETE /users/{id})")
     void deleteUser() {
-        userManager.delete(testUser.getId());
+        Response resp = RestClient.delete("/users/" + user.getId());
+        HttpSupport.expect(resp)
+                .noContent()    // ✅ HTTP 204
+                .timeUnder(2_000L); // ⏱ SLA check example
     }
 }

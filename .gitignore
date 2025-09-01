@@ -21,6 +21,7 @@ target/
 .idea/libraries/
 .idea/**
 *.idea/*
+.idea
 *.iws
 *.iml
 *.ipr

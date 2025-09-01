@@ -1,45 +1,20 @@
 package com.toob.qa.gorest.tests;
 
-import com.toob.qa.gorest.factory.TestDataFactory;
-import com.toob.qa.gorest.manager.CommentManager;
-import com.toob.qa.gorest.manager.PostsManager;
-import com.toob.qa.gorest.manager.TodoManager;
-import com.toob.qa.gorest.manager.UserManager;
-import com.toob.qa.gorest.model.Post;
-import com.toob.qa.gorest.model.User;
-import com.toob.qabase.QaBaseTest;
-import com.toob.qabase.http.AbstractHttpTest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.toob.qabase.rest.AbstractRestTest;
+import io.restassured.RestAssured;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.BeforeAll;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+abstract class AbstractGoRestTest extends AbstractRestTest {
 
-@QaBaseTest
-abstract class AbstractGoRestTest extends AbstractHttpTest {
-
-    @Autowired
-    protected UserManager userManager;
-
-    @Autowired
-    protected PostsManager postsManager;
-
-    @Autowired
-    protected CommentManager commentManager;
-
-    @Autowired
-    protected TodoManager todoManager;
-
-    User postUser() {
-        User savedUser = userManager.save(TestDataFactory.randomUser());
-        assertNotNull(savedUser.getId(), "User ID should not be null after creation.");
-        return savedUser;
-    }
-
-    Post createUserBlogPost(long userId) {
-        Post freshPost = TestDataFactory.randomPost(userId);
-        Post savedPost = postsManager.save(freshPost);
-        assertNotNull(savedPost.getId(), "Post ID should not be null after creation.");
-        return savedPost;
+    @BeforeAll
+    static void addAuthIfPresent() {
+        // Read env var directly (Java 17+ friendly)
+        String token = System.getenv("GOREST_TOKEN");
+        if (StringUtils.isNotBlank(token)) {
+            RestAssured.requestSpecification
+                    .header("Authorization", "Bearer " + token);
+        }
     }
 
 }
