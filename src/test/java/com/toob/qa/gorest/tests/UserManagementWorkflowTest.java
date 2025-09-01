@@ -2,7 +2,6 @@ package com.toob.qa.gorest.tests;
 
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.QaBaseTest;
 import com.toob.qabase.rest.RestModuleConstants;
 import com.toob.qabase.rest.client.RestClient;
 import com.toob.qabase.rest.support.HttpSupport;
@@ -16,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
-@QaBaseTest
 @Epic("User Management")
 @Feature("User Registration and Profile Update")
 @Story("As a user, I want to register and update my profile successfully")

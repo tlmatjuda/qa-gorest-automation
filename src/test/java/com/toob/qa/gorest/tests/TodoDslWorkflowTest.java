@@ -4,7 +4,6 @@ package com.toob.qa.gorest.tests;
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.Todo;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.QaBaseTest;
 import com.toob.qabase.rest.RestModuleConstants;
 import com.toob.qabase.rest.client.RestClient;
 import com.toob.qabase.rest.support.HttpSupport;
@@ -19,7 +18,6 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@QaBaseTest
 @Epic("Task Management")
 @Feature("User Task Management")
 @Story("As a user, I want to manage Tasks or Todos")

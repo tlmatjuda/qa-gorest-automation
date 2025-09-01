@@ -13,11 +13,9 @@ import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @Slf4j
-@QaBaseTest
 @Epic("User Blog Post Workflow")
 @Feature("Blog Post Management")
 @Story("As a user, I want to create and publish a new blog post successfully")
