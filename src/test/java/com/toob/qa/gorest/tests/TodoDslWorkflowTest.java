@@ -22,12 +22,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("User Task Management")
 @Story("As a user, I want to manage Tasks or Todos")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+/**
+ * End-to-end workflow test for user → todo lifecycle,
+ * showcasing the QABase REST DSL (`HttpSupport.expect()`).
+ * The DSL makes REST assertions (status codes, content type,
+ * field equality, etc.) fluent and reduces boilerplate.
+ */
 class TodoDslWorkflowTest extends AbstractGoRestTest {
 
     public static final TypeRef<List<Todo>> TASK_LIST_TYPE_REF = new TypeRef<>() {};
     private static User user;
     private static Todo todo;
 
+    // Uses QABase’s DSL for fluent REST assertions
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")
@@ -39,6 +46,7 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
                 .as(User.class);
     }
 
+    // Validates assigning a new todo with field checks using the same DSL
     @Test
     @Order(2)
     @DisplayName("2️⃣ Assign a todo (POST /todos)")
@@ -52,6 +60,7 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
                 .as(Todo.class);
     }
 
+    // Verifies retrieval of todos for the user using the DSL
     @Test
     @Order(3)
     @DisplayName("3️⃣ Verify user's todos (GET /todos?user_id=)")
@@ -65,6 +74,7 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
         assertTrue(todos.stream().anyMatch(t -> t.getId().equals(todo.getId())));
     }
 
+    // Demonstrates update operations with field equality validation via the DSL
     @Test
     @Order(4)
     @DisplayName("4️⃣ Complete todo (PUT /todos/{id})")
@@ -78,6 +88,7 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
                 .as(Todo.class);
     }
 
+    // Cleanup operations validated with the DSL
     @Test
     @Order(5)
     @DisplayName("5️⃣ Cleanup")

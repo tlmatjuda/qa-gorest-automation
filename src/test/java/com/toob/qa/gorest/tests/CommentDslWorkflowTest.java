@@ -19,12 +19,20 @@ import static org.junit.jupiter.api.Assertions.*;
 @Feature("User Feedback via Comments")
 @Story("As a user, I want to comment on a blog post to engage with its content and share my thoughts")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+/**
+ * End-to-end workflow test for the user → post → comment lifecycle using the QABase REST DSL.
+ * <p>
+ * Leverages {@code HttpSupport.expect()} from QABase to provide a fluent DSL for REST assertions
+ * (status codes, content type, field equality, etc.), making tests more expressive and reducing boilerplate.
+ */
 class CommentDslWorkflowTest extends AbstractGoRestTest {
 
     private static User user;
     private static Post post;
     private static Comment comment;
 
+    // Uses HttpSupport.expect() DSL from QABase for fluent REST assertions.
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")
@@ -62,6 +70,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
         assertNotNull(comment.getId());
     }
 
+    // Validates retrieval using the same fluent DSL for REST assertions.
     @Test
     @Order(4)
     @DisplayName("4️⃣ Fetch comment")

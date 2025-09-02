@@ -20,11 +20,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Feature("Blog Post Management")
 @Story("As a user, I want to create and publish a new blog post successfully")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+/**
+ * End-to-end workflow test for user → post lifecycle,
+ * showcasing the QABase REST DSL (`HttpSupport.expect()`).
+ *
+ * The DSL makes REST assertions (status codes, content type, field equality, etc.)
+ * more fluent and less boilerplate.
+ */
 class PostDslWorkflowTest extends AbstractGoRestTest {
 
     private static User user;
     private static Post post;
 
+    // Uses QABase’s HttpSupport.expect() DSL for fluent REST assertions
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")
@@ -36,6 +44,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
                 .as(User.class);
     }
 
+    // Validates blog post creation using the same fluent DSL
     @Test
     @Order(2)
     @DisplayName("2️⃣ Create post for user")
@@ -51,6 +60,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
         assertNotNull(post.getId());
     }
 
+    // Demonstrates update operations with field equality validation using the DSL
     @Test
     @Order(3)
     @DisplayName("3️⃣ Update post title")
@@ -65,6 +75,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
                 .as(Post.class);
     }
 
+    // Uses the DSL to validate deletion (no content and time under threshold)
     @Test
     @Order(4)
     @DisplayName("4️⃣ Delete post")
@@ -73,6 +84,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
                 .noContent().timeUnder(2_000L);
     }
 
+    // Highlights cleanup via the same DSL
     @Test
     @Order(5)
     @DisplayName("5️⃣ Cleanup user")

@@ -34,7 +34,7 @@
 
     <dependencies>
 
-        <!-- QA Base REST module: brings the REST Expect DSL + Spring test wiring -->
+        <!-- QABase tooling – REST DSL + Spring test wiring -->
         <dependency>
             <groupId>io.github.toobprojects</groupId>
             <artifactId>qabase-rest</artifactId>
@@ -55,6 +55,7 @@
         <testSourceDirectory>src/test/java</testSourceDirectory>
 
         <plugins>
+            <!-- QABase tooling – Lombok + Java compiler setup -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -20,10 +20,17 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Story("As a user, I want to register and update my profile successfully")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+/**
+ * End-to-end workflow test for user registration, profile fetch/update, and deletion.
+ * This test leverages the QABase REST DSL (HttpSupport.expect()) which provides fluent and expressive REST assertions
+ * including status codes, content type, field equality, and SLA checks.
+ * The DSL also integrates with Allure for enhanced reporting and traceability of REST interactions.
+ */
 class UserManagementWorkflowTest extends AbstractGoRestTest {
 
     private static User user;
 
+    // Demonstrates QABase DSL chain for POST requests and response assertions
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user (POST /users)")
@@ -39,6 +46,7 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
         assertNotNull(user.getId(), "New user must have an id");
     }
 
+    // Validates retrieval using DSL assertions including JSON path equality
     @Test
     @Order(2)
     @DisplayName("2️⃣ Fetch user (GET /users/{id})")
@@ -54,6 +62,7 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
         assertEquals(user.getEmail(), found.getEmail());
     }
 
+    // Shows update and field equality validation with the DSL
     @Test
     @Order(3)
     @DisplayName("3️⃣ Update user (PUT /users/{id})")
@@ -69,6 +78,7 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
                 .as(User.class);
     }
 
+    // Highlights DSL checks for HTTP 204 (No Content) and SLA timing
     @Test
     @Order(4)
     @DisplayName("4️⃣ Delete user (DELETE /users/{id})")
