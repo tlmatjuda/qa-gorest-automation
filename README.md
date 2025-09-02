@@ -1,6 +1,6 @@
 # 🚀 QA GoRest Automation – Showcase with QABase
 
-> **Highlights:** End-to-end REST API automation using the [QABase](https://github.com/toobprojects/qabase) framework (v1.3.0).  
+> **Highlights:** End-to-end REST API automation using the [QABase](https://github.com/toobprojects/qabase-framework) framework (v1.3.0).  
 > **Scope:** Demonstrates how to use the QABase **Core** module for fluent REST testing with minimal setup.
 
 ---
