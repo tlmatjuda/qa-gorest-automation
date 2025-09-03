@@ -76,6 +76,9 @@ qabase:
     base-url: "https://gorest.co.in/public/v2"
 ```
 
+> Values can be overridden via system props or env if needed.
+
+
 👉 That’s it! This minimal configuration ensures:
 - QABase parent manages plugins & dependencies.  
 - REST DSL and helpers are available out of the box.  
