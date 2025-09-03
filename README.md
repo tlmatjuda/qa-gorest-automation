@@ -90,7 +90,17 @@ HttpSupport.expect(resp)
 ## 📊 Reporting with Allure
 After running tests, QABase automatically generates **Allure Reports** under `target/allure-results`.
 
-Serve the report locally:
+### Generate the report:
+
+```bash
+# 1) Property-based activation (auto-activates the profile)
+mvn clean verify -Dallure.reports=true
+
+# 2) Profile by ID (sets the same property under the hood)
+mvn clean verify -Pallure-reports
+```
+
+### Serve the report locally:
 
 ```bash
 mvn allure:serve
