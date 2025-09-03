@@ -24,6 +24,18 @@ It demonstrates:
 
 ---
 
+## 🔑 Authentication Setup
+To run these tests, you will need a valid **GoRest API Token**.  
+Generate one from the [GoRest API website](https://gorest.co.in/), then expose it as an environment variable:
+
+```bash
+export GOREST_TOKEN=your_generated_token_here
+```
+
+This token is automatically picked up by the test cases via the `GOREST_TOKEN` environment variable.
+
+---
+
 ## 📦 Minimal POM Setup
 To get started with QABase, you only need:
 
