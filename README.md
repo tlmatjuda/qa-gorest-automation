@@ -62,6 +62,20 @@ To get started with QABase, you only need:
 </build>
 ```
 
+## 🛠️ QABase Rest Configuration
+
+Project config (YAML) used by the showcase:
+
+```yaml
+qabase:
+  core:
+    reports:
+      archive:
+        enabled: true   # set to false (or omit) to disable
+  rest:
+    base-url: "https://gorest.co.in/public/v2"
+```
+
 👉 That’s it! This minimal configuration ensures:
 - QABase parent manages plugins & dependencies.  
 - REST DSL and helpers are available out of the box.  
