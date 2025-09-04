@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Story("As a user, I want to manage Tasks or Todos")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
- * End-to-end workflow test for user → todo lifecycle,
+ * End-to-end workflow test for user → Task lifecycle,
  * showcasing the QABase REST DSL (`HttpSupport.expect()`).
  * The DSL makes REST assertions (status codes, content type,
  * field equality, etc.) fluent and reduces boilerplate.
@@ -46,7 +46,7 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
                 .as(User.class);
     }
 
-    // Validates assigning a new todo with field checks using the same DSL
+    // Validates assigning a new Task with field checks using the same DSL
     @Test
     @Order(2)
     @DisplayName("2️⃣ Assign a todo (POST /todos)")

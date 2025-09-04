@@ -43,7 +43,7 @@ To get started with QABase, you only need:
 <parent>
     <groupId>io.github.toobprojects</groupId>
     <artifactId>qabase-framework</artifactId>
-    <version>1.3.1</version>
+    <version>1.4.1</version>
     <relativePath/> <!-- fetch from repository -->
 </parent>
 
