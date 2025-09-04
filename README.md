@@ -68,10 +68,6 @@ Project config (YAML) used by the showcase:
 
 ```yaml
 qabase:
-  core:
-    reports:
-      archive:
-        enabled: true   # set to false (or omit) to disable
   rest:
     base-url: "https://gorest.co.in/public/v2"
 ```
