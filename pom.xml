@@ -53,43 +53,5 @@
         <!-- Make sure Java tests are included -->
         <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>src/test/java</testSourceDirectory>
-
-        <plugins>
-            <!-- QABase tooling – Lombok + Java compiler setup -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <!-- Rely on parent for version if it manages it; otherwise set a modern one like 3.11.0 -->
-                <configuration>
-                    <release>${java.version}</release>
-
-                    <!-- Run Lombok as an annotation processor for main sources -->
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
-                        </path>
-                    </annotationProcessorPaths>
-                </configuration>
-
-                <!-- Ensure tests also get Lombok processing -->
-                <executions>
-                    <execution>
-                        <id>test-compile</id>
-                        <goals><goal>testCompile</goal></goals>
-                        <configuration>
-                            <annotationProcessorPaths>
-                                <path>
-                                    <groupId>org.projectlombok</groupId>
-                                    <artifactId>lombok</artifactId>
-                                    <version>${lombok.version}</version>
-                                </path>
-                            </annotationProcessorPaths>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
     </build>
 </project>
