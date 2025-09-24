@@ -6,6 +6,8 @@ import com.toob.qa.gorest.model.Comment;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
 import com.toob.qabase.rest.RestModuleConstants;
+import com.toob.qabase.rest.assertions.AssertionsKt;
+import com.toob.qabase.rest.assertions.RestAssertions;
 import com.toob.qabase.rest.client.RestClient;
 import com.toob.qabase.rest.support.HttpSupport;
 import io.qameta.allure.*;
@@ -37,7 +39,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     @Order(1)
     @DisplayName("1️⃣ Create user")
     void createUser() {
-        user = HttpSupport.expect(RestClient.post("/users", TestDataFactory.randomUser()))
+        user = RestAssertions.expect(RestClient.post("/users", TestDataFactory.randomUser()))
                 .created()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .attach()
@@ -48,7 +50,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     @Order(2)
     @DisplayName("2️⃣ Create post")
     void createPost() {
-        post = HttpSupport.expect(RestClient.post("/posts", TestDataFactory.randomPost(user.getId())))
+        post = RestAssertions.expect(RestClient.post("/posts", TestDataFactory.randomPost(user.getId())))
                 .created()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .fieldEq("user_id", Math.toIntExact(user.getId()))
@@ -60,7 +62,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     @Order(3)
     @DisplayName("3️⃣ Add comment")
     void addComment() {
-        comment = HttpSupport.expect(RestClient.post("/comments", TestDataFactory.randomComment(post.getId())))
+        comment = RestAssertions.expect(RestClient.post("/comments", TestDataFactory.randomComment(post.getId())))
                 .created()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .fieldEq("post_id", Math.toIntExact(post.getId()))
@@ -75,7 +77,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     @Order(4)
     @DisplayName("4️⃣ Fetch comment")
     void fetchComment() {
-        Comment found = HttpSupport.expect(RestClient.get("/comments/" + comment.getId()))
+        Comment found = RestAssertions.expect(RestClient.get("/comments/" + comment.getId()))
                 .ok()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .fieldEq("id", Math.toIntExact(comment.getId()))
@@ -89,9 +91,9 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     @Order(5)
     @DisplayName("5️⃣ Cleanup")
     void cleanup() {
-        HttpSupport.expect(RestClient.delete("/comments/" + comment.getId())).noContent();
-        HttpSupport.expect(RestClient.delete("/posts/" + post.getId())).noContent();
-        HttpSupport.expect(RestClient.delete("/users/" + user.getId())).noContent();
+        RestAssertions.expect(RestClient.delete("/comments/" + comment.getId())).noContent();
+        RestAssertions.expect(RestClient.delete("/posts/" + post.getId())).noContent();
+        RestAssertions.expect(RestClient.delete("/users/" + user.getId())).noContent();
     }
 
 }

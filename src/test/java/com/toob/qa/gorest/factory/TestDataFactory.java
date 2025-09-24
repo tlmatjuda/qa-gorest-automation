@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
- * Factory class for generating random test data objects (User, Post, Comment, Todo)
+ * Factory class for generating random test data objects (User, Post, Comment, Task)
  * for QABase automation tests. Each method provides randomized or auto-generated
  * values for the relevant fields, useful for test scenarios.
  */
@@ -64,11 +64,11 @@ public class TestDataFactory {
     }
 
     /**
-     * Generates a random Todo object associated with the provided userId.
+     * Generates a random Task object associated with the provided userId.
      * Title is randomized, due date is set to 7 days from now, and status is "pending".
      *
-     * @param userId the ID of the user to associate with this Todo
-     * @return Todo with randomized title and future due date
+     * @param userId the ID of the user to associate with this Task
+     * @return Task with randomized title and future due date
      */
     public static Todo randomTodo(long userId) {
         return Todo.builder()

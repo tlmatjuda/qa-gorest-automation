@@ -4,10 +4,9 @@ package com.toob.qa.gorest.tests;
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.QaBaseTest;
 import com.toob.qabase.rest.RestModuleConstants;
+import com.toob.qabase.rest.assertions.RestAssertions;
 import com.toob.qabase.rest.client.RestClient;
-import com.toob.qabase.rest.support.HttpSupport;
 import io.qameta.allure.*;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +36,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(1)
     @DisplayName("1️⃣ Create user")
     void createUser() {
-        user = HttpSupport.expect(RestClient.post("/users", TestDataFactory.randomUser()))
+        user = RestAssertions.expect(RestClient.post("/users", TestDataFactory.randomUser()))
                 .created()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .attach()
@@ -50,7 +49,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @DisplayName("2️⃣ Create post for user")
     void createPost() {
         Response resp = RestClient.post("/posts", TestDataFactory.randomPost(user.getId()));
-        post = HttpSupport.expect(resp)
+        post = RestAssertions.expect(resp)
                 .created()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .fieldEq("user_id", Math.toIntExact(user.getId()))
@@ -67,7 +66,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     void updatePost() {
         post.setTitle(post.getTitle() + " (edited)");
 
-        post = HttpSupport.expect(RestClient.put("/posts/" + post.getId(), post))
+        post = RestAssertions.expect(RestClient.put("/posts/" + post.getId(), post))
                 .ok()
                 .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
                 .fieldEq("id", Math.toIntExact(post.getId()))
@@ -80,7 +79,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(4)
     @DisplayName("4️⃣ Delete post")
     void deletePost() {
-        HttpSupport.expect(RestClient.delete("/posts/" + post.getId()))
+        RestAssertions.expect(RestClient.delete("/posts/" + post.getId()))
                 .noContent().timeUnder(2_000L);
     }
 
@@ -89,7 +88,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(5)
     @DisplayName("5️⃣ Cleanup user")
     void deleteUser() {
-        HttpSupport.expect(RestClient.delete("/users/" + user.getId()))
+        RestAssertions.expect(RestClient.delete("/users/" + user.getId()))
                 .noContent();
     }
 

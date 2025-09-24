@@ -1,6 +1,6 @@
 package com.toob.qa.gorest.tests;
 
-import com.toob.qabase.rest.AbstractRestTest;
+import com.toob.qabase.rest.QaRestTest;
 import io.restassured.RestAssured;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +15,8 @@ import static com.toob.qabase.rest.RestModuleConstants.BEARER;
  * It adds project-specific configuration for the GoRest API, including reading
  * the GOREST_TOKEN environment variable and applying it as a Bearer token header.
  */
-abstract class AbstractGoRestTest extends AbstractRestTest {
+@QaRestTest
+abstract class AbstractGoRestTest {
 
     // Environment variable for GoRest token
     public static final String ENV_GOREST_TOKEN = "GOREST_TOKEN";
