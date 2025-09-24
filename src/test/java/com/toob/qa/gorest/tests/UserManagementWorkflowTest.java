@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user registration, profile fetch/update, and deletion.
- * This test leverages the QABase REST DSL (HttpSupport.expect()) which provides fluent and expressive REST assertions
+ * This test leverages the QABase REST DSL (RestAssertions.expect()) which provides fluent and expressive REST assertions
  * including status codes, content type, field equality, and SLA checks.
  * The DSL also integrates with Allure for enhanced reporting and traceability of REST interactions.
  */

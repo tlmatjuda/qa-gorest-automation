@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * End-to-end workflow test for the user → post → comment lifecycle using the QABase REST DSL.
  * <p>
- * Leverages {@code HttpSupport.expect()} from QABase to provide a fluent DSL for REST assertions
+ * Leverages {@code RestAssertions.expect()} from QABase to provide a fluent DSL for REST assertions
  * (status codes, content type, field equality, etc.), making tests more expressive and reducing boilerplate.
  */
 class CommentDslWorkflowTest extends AbstractGoRestTest {
@@ -32,7 +32,7 @@ class CommentDslWorkflowTest extends AbstractGoRestTest {
     private static Post post;
     private static Comment comment;
 
-    // Uses HttpSupport.expect() DSL from QABase for fluent REST assertions.
+    // Uses RestAssertions.expect() DSL from QABase for fluent REST assertions.
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")

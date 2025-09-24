@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user → post lifecycle,
- * showcasing the QABase REST DSL (`HttpSupport.expect()`).
+ * showcasing the QABase REST DSL (`RestAssertions.expect()`).
  *
  * The DSL makes REST assertions (status codes, content type, field equality, etc.)
  * more fluent and less boilerplate.
@@ -31,7 +31,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     private static User user;
     private static Post post;
 
-    // Uses QABase’s HttpSupport.expect() DSL for fluent REST assertions
+    // Uses QABase’s RestAssertions.expect() DSL for fluent REST assertions
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")

@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user → Task lifecycle,
- * showcasing the QABase REST DSL (`HttpSupport.expect()`).
+ * showcasing the QABase REST DSL (`RestAssertions.expect()`).
  * The DSL makes REST assertions (status codes, content type,
  * field equality, etc.) fluent and reduces boilerplate.
  */
