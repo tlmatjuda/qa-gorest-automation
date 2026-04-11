@@ -9,3 +9,7 @@ qabase:
         enabled: true   # set to false (or omit) to disable
   rest:
     base-url: "https://gorest.co.in/public/v2"
+    headers:
+      content-type: "application/json"
+      accept: "application/json"
+      authorization: "${GOREST_AUTHORIZATION:}"

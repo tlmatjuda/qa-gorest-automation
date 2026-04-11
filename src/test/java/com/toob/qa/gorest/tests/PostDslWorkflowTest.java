@@ -4,11 +4,8 @@ package com.toob.qa.gorest.tests;
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.Post;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.rest.RestModuleConstants;
-import com.toob.qabase.rest.assertions.RestAssertions;
 import com.toob.qabase.rest.client.RestClient;
 import io.qameta.allure.*;
-import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
@@ -21,24 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user → post lifecycle,
- * showcasing the QABase REST DSL (`RestAssertions.expect()`).
- *
- * The DSL makes REST assertions (status codes, content type, field equality, etc.)
- * more fluent and less boilerplate.
+ * showcasing the QABase 2.2.0 unified RestClient chaining style.
  */
 class PostDslWorkflowTest extends AbstractGoRestTest {
 
     private static User user;
     private static Post post;
 
-    // Uses QABase’s RestAssertions.expect() DSL for fluent REST assertions
+    // Uses direct RestClient chaining for create + assert + extract.
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")
     void createUser() {
-        user = RestAssertions.expect(RestClient.post("/users", TestDataFactory.randomUser()))
+        user = RestClient.post("/users", TestDataFactory.randomUser())
                 .created()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .attach()
                 .as(User.class);
     }
@@ -48,10 +42,9 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(2)
     @DisplayName("2️⃣ Create post for user")
     void createPost() {
-        Response resp = RestClient.post("/posts", TestDataFactory.randomPost(user.getId()));
-        post = RestAssertions.expect(resp)
+        post = RestClient.post("/posts", TestDataFactory.randomPost(user.getId()))
                 .created()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("user_id", Math.toIntExact(user.getId()))
                 .attach()
                 .as(Post.class);
@@ -66,9 +59,9 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     void updatePost() {
         post.setTitle(post.getTitle() + " (edited)");
 
-        post = RestAssertions.expect(RestClient.put("/posts/" + post.getId(), post))
+        post = RestClient.put("/posts/" + post.getId(), post)
                 .ok()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("id", Math.toIntExact(post.getId()))
                 .attach()
                 .as(Post.class);
@@ -79,7 +72,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(4)
     @DisplayName("4️⃣ Delete post")
     void deletePost() {
-        RestAssertions.expect(RestClient.delete("/posts/" + post.getId()))
+        RestClient.delete("/posts/" + post.getId())
                 .noContent().timeUnder(2_000L);
     }
 
@@ -88,7 +81,7 @@ class PostDslWorkflowTest extends AbstractGoRestTest {
     @Order(5)
     @DisplayName("5️⃣ Cleanup user")
     void deleteUser() {
-        RestAssertions.expect(RestClient.delete("/users/" + user.getId()))
+        RestClient.delete("/users/" + user.getId())
                 .noContent();
     }
 

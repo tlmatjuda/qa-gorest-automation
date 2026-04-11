@@ -4,8 +4,6 @@ package com.toob.qa.gorest.tests;
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.Todo;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.rest.RestModuleConstants;
-import com.toob.qabase.rest.assertions.RestAssertions;
 import com.toob.qabase.rest.client.RestClient;
 import io.qameta.allure.*;
 import io.restassured.common.mapper.TypeRef;
@@ -24,9 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user → Task lifecycle,
- * showcasing the QABase REST DSL (`RestAssertions.expect()`).
- * The DSL makes REST assertions (status codes, content type,
- * field equality, etc.) fluent and reduces boilerplate.
+ * showcasing the QABase 2.2.0 unified RestClient chaining style.
  */
 class TodoDslWorkflowTest extends AbstractGoRestTest {
 
@@ -34,14 +30,14 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
     private static User user;
     private static Todo todo;
 
-    // Uses QABase’s DSL for fluent REST assertions
+    // Uses direct RestClient chaining for fluent REST assertions.
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user")
     void createUser() {
-        user = RestAssertions.expect(RestClient.post("/users", TestDataFactory.randomUser()))
+        user = RestClient.post("/users", TestDataFactory.randomUser())
                 .created()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .attach()
                 .as(User.class);
     }
@@ -51,9 +47,9 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
     @Order(2)
     @DisplayName("2️⃣ Assign a todo (POST /todos)")
     void assignTodo() {
-        todo = RestAssertions.expect(RestClient.post("/todos", TestDataFactory.randomTodo(user.getId())))
+        todo = RestClient.post("/todos", TestDataFactory.randomTodo(user.getId()))
                 .created()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("user_id", Math.toIntExact(user.getId()))
                 .fieldEq("status", "pending")
                 .attach()
@@ -65,9 +61,9 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
     @Order(3)
     @DisplayName("3️⃣ Verify user's todos (GET /todos?user_id=)")
     void verifyUserTodos() {
-        List<Todo> todos = RestAssertions.expect(RestClient.get("/todos", Map.of("user_id", user.getId())))
+        List<Todo> todos = RestClient.get("/todos", Map.of("user_id", user.getId()))
                 .ok()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .attach()
                 .as(TASK_LIST_TYPE_REF);
 
@@ -80,9 +76,9 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
     @DisplayName("4️⃣ Complete todo (PUT /todos/{id})")
     void completeTodo() {
         todo.setStatus("completed");
-        todo = RestAssertions.expect(RestClient.put("/todos/" + todo.getId(), todo))
+        todo = RestClient.put("/todos/" + todo.getId(), todo)
                 .ok()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("status", "completed")
                 .attach()
                 .as(Todo.class);
@@ -93,8 +89,8 @@ class TodoDslWorkflowTest extends AbstractGoRestTest {
     @Order(5)
     @DisplayName("5️⃣ Cleanup")
     void cleanup() {
-        RestAssertions.expect(RestClient.delete("/todos/" + todo.getId())).noContent();
-        RestAssertions.expect(RestClient.delete("/users/" + user.getId())).noContent();
+        RestClient.delete("/todos/" + todo.getId()).noContent();
+        RestClient.delete("/users/" + user.getId()).noContent();
     }
 
 }

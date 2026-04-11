@@ -1,16 +1,16 @@
 # 🚀 QA GoRest Automation – Showcase with QABase
 
-> **Highlights:** End-to-end REST API automation using the [QABase](https://github.com/toobprojects/qabase-framework) framework (v1.3.0).  
-> **Scope:** Demonstrates how to use the QABase **Core** module for fluent REST testing with minimal setup.
+> **Highlights:** End-to-end REST API automation using [QABase](https://github.com/toobprojects/qabase-framework) `2.2.0`.  
+> **Scope:** Demonstrates the QABase REST module with unified request/assertion chaining and config-driven default headers.
 
 ---
 
 ## 📖 About This Project
 This repository is a **showcase project** for **REST API automation testing** using **QABase**.  
 It demonstrates:
-- ✅ Minimal Maven setup with **QABase Core** as the parent.  
-- ✅ Fluent **REST DSL** via `HttpSupport.expect()` for assertions.  
-- ✅ Convenient **RestClient** wrapper for HTTP calls.  
+- ✅ Minimal Maven setup with **QABase Framework** as the parent.  
+- ✅ Unified **RestClient** flow where calls and assertions chain from the same response object.  
+- ✅ Config-based default headers via `qabase.rest.headers.*`.  
 - ✅ **Allure reports** auto-generated from tests for traceability.  
 
 > This project focuses on **REST API testing**.  
@@ -26,13 +26,19 @@ It demonstrates:
 
 ## 🔑 Authentication Setup
 To run these tests, you will need a valid **GoRest API Token**.  
-Generate one from the [GoRest API website](https://gorest.co.in/), then expose it as an environment variable:
+Generate one from the [GoRest API website](https://gorest.co.in/), then expose it in one of these ways:
+
+```bash
+export GOREST_AUTHORIZATION="Bearer your_generated_token_here"
+```
+
+For backward compatibility, the showcase also accepts:
 
 ```bash
 export GOREST_TOKEN=your_generated_token_here
 ```
 
-This token is automatically picked up by the test cases via the `GOREST_TOKEN` environment variable.
+If `GOREST_AUTHORIZATION` is not already provided, the tests will convert `GOREST_TOKEN` into the configured `Authorization` header automatically.
 
 ---
 
@@ -43,12 +49,12 @@ To get started with QABase, you only need:
 <parent>
     <groupId>io.github.toobprojects</groupId>
     <artifactId>qabase-framework</artifactId>
-    <version>2.0.0</version>
+    <version>2.2.0</version>
     <relativePath/> <!-- fetch from repository -->
 </parent>
 
 <dependencies>
-    <!-- QABase REST DSL -->
+    <!-- QABase REST -->
     <dependency>
         <groupId>io.github.toobprojects</groupId>
         <artifactId>qabase-rest</artifactId>
@@ -70,14 +76,18 @@ Project config (YAML) used by the showcase:
 qabase:
   rest:
     base-url: "https://gorest.co.in/public/v2"
+    headers:
+      content-type: "application/json"
+      accept: "application/json"
+      authorization: "${GOREST_AUTHORIZATION:}"
 ```
 
-> Values can be overridden via system props or env if needed.
+> Use config for common headers and reserve request-level header overrides for truly request-specific cases.
 
 
 👉 That’s it! This minimal configuration ensures:
 - QABase parent manages plugins & dependencies.  
-- REST DSL and helpers are available out of the box.  
+- RestClient and response assertions are available out of the box.  
 - Allure reporting and test lifecycle wiring are pre-configured.  
 
 (Optional) Add **Lombok** if you prefer boilerplate-free Java (not required for QABase).
@@ -88,10 +98,9 @@ qabase:
 
 ### Create User
 ```java
-Response resp = RestClient.post("/users", TestDataFactory.randomUser());
-user = HttpSupport.expect(resp)
+user = RestClient.post("/users", TestDataFactory.randomUser())
         .created()
-        .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+        .contentType()
         .attach()
         .as(User.class);
 
@@ -100,15 +109,14 @@ assertNotNull(user.getId(), "New user must have an id");
 
 ### Fetch User
 ```java
-Response resp = RestClient.get("/users/" + user.getId());
-HttpSupport.expect(resp)
+RestClient.get("/users/" + user.getId())
         .ok()
-        .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+        .contentType()
         .fieldEq("id", Math.toIntExact(user.getId()))
         .attach();
 ```
 
-👉 These tests use the **QABase REST DSL** to validate status codes, content types, fields, and even SLA timing.
+👉 In QABase `2.2.0`, the object returned by `RestClient` is the primary REST test surface: request execution, assertions, attachments, and extraction all live in one fluent chain.
 
 ---
 
@@ -137,8 +145,9 @@ Sample report (screenshot):
 ---
 
 ## 🔑 Key Takeaways
-- Minimal setup with **QABase Core** → parent POM does the heavy lifting.  
-- Fluent REST assertions via `HttpSupport.expect()`.  
+- Minimal setup with **QABase Framework** → parent POM does the heavy lifting.  
+- Unified REST assertions directly from `RestClient`.  
+- Config-based default headers reduce repeated request setup.  
 - Auto-generated **Allure reporting** for beautiful test insights.  
 - Java-friendly (works great with **Lombok** if you prefer).  
 

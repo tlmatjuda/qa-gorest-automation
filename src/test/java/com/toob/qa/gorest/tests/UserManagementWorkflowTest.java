@@ -2,11 +2,8 @@ package com.toob.qa.gorest.tests;
 
 import com.toob.qa.gorest.factory.TestDataFactory;
 import com.toob.qa.gorest.model.User;
-import com.toob.qabase.rest.RestModuleConstants;
-import com.toob.qabase.rest.assertions.RestAssertions;
 import com.toob.qabase.rest.client.RestClient;
 import io.qameta.allure.*;
-import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 
@@ -20,24 +17,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 /**
  * End-to-end workflow test for user registration, profile fetch/update, and deletion.
- * This test leverages the QABase REST DSL (RestAssertions.expect()) which provides fluent and expressive REST assertions
- * including status codes, content type, field equality, and SLA checks.
- * The DSL also integrates with Allure for enhanced reporting and traceability of REST interactions.
+ * This test leverages QABase 2.2.0's unified REST flow where RestClient calls
+ * return a chainable response object for assertions and extraction.
  */
 class UserManagementWorkflowTest extends AbstractGoRestTest {
 
     private static User user;
 
-    // Demonstrates QABase DSL chain for POST requests and response assertions
+    // Demonstrates the unified RestClient response/assertion chain for POST requests.
     @Test
     @Order(1)
     @DisplayName("1️⃣ Create user (POST /users)")
     void createUser() {
-        // QA Base REST Expect DSL: readable Given/When/Then chain
-        Response resp = RestClient.post("/users", TestDataFactory.randomUser());
-        user = RestAssertions.expect(resp)
+        user = RestClient.post("/users", TestDataFactory.randomUser())
                 .created()  // ✅ HTTP 201
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .attach()   // 📎 Add response body to Allure
                 .as(User.class);
 
@@ -49,10 +43,9 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
     @Order(2)
     @DisplayName("2️⃣ Fetch user (GET /users/{id})")
     void fetchUser() {
-        Response resp = RestClient.get("/users/" + user.getId());
-        User found = RestAssertions.expect(resp)
+        User found = RestClient.get("/users/" + user.getId())
                 .ok()   // ✅ HTTP 200
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("id", Math.toIntExact(user.getId()))    // 🔎 JSON path assertion via DSL
                 .attach()
                 .as(User.class);
@@ -67,10 +60,9 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
     void updateUser() {
         user.setStatus("inactive");
 
-        Response resp = RestClient.put("/users/" + user.getId(), user);
-        user = RestAssertions.expect(resp)
+        user = RestClient.put("/users/" + user.getId(), user)
                 .ok()
-                .contentType(RestModuleConstants.DEFAULT_CONTENT_TYPE)
+                .contentType()
                 .fieldEq("status", "inactive")
                 .attach()
                 .as(User.class);
@@ -81,8 +73,7 @@ class UserManagementWorkflowTest extends AbstractGoRestTest {
     @Order(4)
     @DisplayName("4️⃣ Delete user (DELETE /users/{id})")
     void deleteUser() {
-        Response resp = RestClient.delete("/users/" + user.getId());
-        RestAssertions.expect(resp)
+        RestClient.delete("/users/" + user.getId())
                 .noContent()    // ✅ HTTP 204
                 .timeUnder(2_000L); // ⏱ SLA check example
     }
