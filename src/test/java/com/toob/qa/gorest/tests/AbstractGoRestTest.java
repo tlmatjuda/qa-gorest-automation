@@ -21,18 +21,35 @@ abstract class AbstractGoRestTest {
     public static final String ENV_GOREST_AUTHORIZATION = "GOREST_AUTHORIZATION";
     public static final String PROP_AUTHORIZATION = "qabase.rest.headers.authorization";
 
-    // Keeps legacy token setup working while default headers are sourced from config.
+    // Sets one normalized Authorization header so requests never send both a placeholder
+    // value from config and a runtime token.
     @BeforeAll
     static void configureAuthorizationIfPresent() {
-        if (StringUtils.isNotBlank(System.getProperty(PROP_AUTHORIZATION))
-                || StringUtils.isNotBlank(System.getenv(ENV_GOREST_AUTHORIZATION))) {
+        if (StringUtils.isNotBlank(System.getProperty(PROP_AUTHORIZATION))) {
             return;
         }
 
-        String token = System.getenv(ENV_GOREST_TOKEN);
-        if (StringUtils.isNotBlank(token)) {
+        String authorization = normalizeAuthorization(System.getenv(ENV_GOREST_AUTHORIZATION));
+        if (authorization != null) {
+            System.setProperty(PROP_AUTHORIZATION, authorization);
+            return;
+        }
+
+        String token = StringUtils.trimToNull(System.getenv(ENV_GOREST_TOKEN));
+        if (token != null) {
             System.setProperty(PROP_AUTHORIZATION, BEARER + " " + token);
         }
+    }
+
+    private static String normalizeAuthorization(String authorization) {
+        String value = StringUtils.trimToNull(authorization);
+        if (value == null) {
+            return null;
+        }
+
+        return StringUtils.startsWithIgnoreCase(value, BEARER + " ")
+                ? value
+                : BEARER + " " + value;
     }
 
 }

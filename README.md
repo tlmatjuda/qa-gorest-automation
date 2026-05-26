@@ -79,10 +79,12 @@ qabase:
     headers:
       content-type: "application/json"
       accept: "application/json"
-      authorization: "${GOREST_AUTHORIZATION:}"
 ```
 
-> Use config for common headers and reserve request-level header overrides for truly request-specific cases.
+> The `Authorization` header is applied at test startup from `GOREST_AUTHORIZATION`
+> or the legacy `GOREST_TOKEN` env var so the suite sends exactly one auth header.
+> Use config for common headers and reserve request-level header overrides for truly
+> request-specific cases.
 
 
 👉 That’s it! This minimal configuration ensures:

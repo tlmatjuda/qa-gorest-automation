@@ -12,4 +12,3 @@ qabase:
     headers:
       content-type: "application/json"
       accept: "application/json"
-      authorization: "${GOREST_AUTHORIZATION:}"
